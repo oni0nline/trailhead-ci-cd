@@ -1,38 +1,31 @@
-name: Python CI
+name: Python Selenium Test
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest  # You can use windows-latest if preferred
 
     steps:
-    - name: Check out repository
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.13'
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.13
 
-    - name: Install dependencies
-      run: |
-        python -m venv venv
-        . venv/bin/activate  # for Ubuntu
-        pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          . venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Install pytest
-      run: |
-        . venv/bin/activate  # for Ubuntu
-        pip install pytest
-
-    - name: Run tests
-      run: |
-        . venv/bin/activate  # for Ubuntu
-        pytest tests  # Adjust if your tests are in a different directory
-
+      - name: Run tests
+        run: |
+          . venv/bin/activate
+          pytest ./Tests
