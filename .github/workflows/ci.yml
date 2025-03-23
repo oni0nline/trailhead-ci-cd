@@ -1,33 +1,32 @@
-name: Python Selenium Test
+name: Python CI
 
 on:
   push:
-    branches:
-      - main  # Trigger workflow when pushing to the main branch
+    branches: [main]
   pull_request:
-    branches:
-      - main  # Trigger workflow on PRs to the main branch
+    branches: [main]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest  # Use Ubuntu for the environment
+  build:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2  # Check out the code from your repository
+    - name: Check out repository
+      uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'  # Ensure the correct Python version is set up
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.13'
 
-      - name: Install dependencies
-        run: |
-          python -m venv venv  # Create virtual environment
-          source venv/bin/activate  # Activate the virtual environment
-          pip install -r requirements.txt  # Install dependencies from requirements.txt
+    - name: Install dependencies
+      run: |
+        python -m venv venv
+        . venv/bin/activate  # for Ubuntu, on Windows use venv\Scripts\activate
+        pip install --upgrade pip
+        pip install -r requirements.txt
 
-      - name: Run Selenium test
-        run: |
-          source venv/bin/activate  # Activate virtual environment again if necessary
-          python -m pytest tests/test_selenium.py  # Run the test using pytest
+    - name: Run tests
+      run: |
+        . venv/bin/activate  # for Ubuntu, on Windows use venv\Scripts\activate
+        pytest tests  # Adjust if your tests are in a different directory
