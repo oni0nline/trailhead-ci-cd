@@ -3,10 +3,10 @@ name: Python Selenium Test
 on:
   push:
     branches:
-      - main  # This will trigger the workflow on pushes to the main branch
+      - main  # Trigger workflow when pushing to the main branch
   pull_request:
     branches:
-      - main  # This will also trigger the workflow on pull requests to the main branch
+      - main  # Trigger workflow on PRs to the main branch
 
 jobs:
   test:
@@ -14,12 +14,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2  # This checks out your repository code
+        uses: actions/checkout@v2  # Check out the code from your repository
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.8'  # Use Python 3.8 (or change to the version you need)
+          python-version: '3.8'  # Ensure the correct Python version is set up
 
       - name: Install dependencies
         run: |
@@ -29,6 +29,5 @@ jobs:
 
       - name: Run Selenium test
         run: |
-          source venv/bin/activate  # Activate the virtual environment
-          python tests/test_selenium.py  # Run the Selenium test
-
+          source venv/bin/activate  # Activate virtual environment again if necessary
+          python -m pytest tests/test_selenium.py  # Run the test using pytest
